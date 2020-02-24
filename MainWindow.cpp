@@ -22,10 +22,12 @@
 #include "hw4/HW4a.h"
 #include "hw4/HW4b.h"
 
+// original background-color: rgb(230, 232, 232)
+
 QString frameStyle   = "QFrame#frame {				\
 			border: 2px solid gray;			\
 			border-radius: 9px;			\
-			background-color: rgb(230, 232, 232);	\
+            background-color: rgb(126, 128, 128);	\
 			}";
 
 MainWindow *MainWindowP = NULL;
@@ -58,7 +60,7 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 	// add stacked widget to vertical box layout 
 	QFrame *frame = new QFrame;
 	frame->setObjectName("frame");
-	frame->setStyleSheet(frameStyle);
+    frame->setStyleSheet(frameStyle);
 	frame->setMinimumWidth(300);
 	QVBoxLayout *vbox = new QVBoxLayout;
 	vbox->addWidget(m_stackWidgetPanels);

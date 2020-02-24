@@ -283,10 +283,10 @@ HW2b::triangle(vec2 v1, vec2 v2, vec2 v3)
 	m_points.push_back(v2);
 	m_points.push_back(v3);
 
-	// init color
-	float r = (float) rand() / RAND_MAX;
-	float g = (float) rand() / RAND_MAX;
-	float b = (float) rand() / RAND_MAX;
+    // init color
+    float r = (float) rand() / RAND_MAX;
+    float g = (float) rand() / RAND_MAX;
+    float b = (float) rand() / RAND_MAX;
 	m_colors.push_back(vec3(r, g, b));
 	m_colors.push_back(vec3(r, g, b));
 	m_colors.push_back(vec3(r, g, b));

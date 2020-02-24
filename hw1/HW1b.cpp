@@ -20,7 +20,7 @@ HW1b::HW1b(const QGLFormat &glf, QWidget *parent)
 {
 	// init vars
 	m_theta		= 0;
-	m_subdivisions	= 4;
+    m_subdivisions	= 4;
 	m_updateColor	= 1;
 	m_twist		= 1;
 }
@@ -127,16 +127,16 @@ HW1b::controlPanel()
 
 	// init sliders
 	m_sliderTheta ->setRange(0, 360);
-	m_sliderTheta ->setValue(0);
-	m_sliderSubdiv->setRange(0, 6);
+    m_sliderTheta ->setValue(0);
+    m_sliderSubdiv->setRange(0, 6);
 	m_sliderSubdiv->setValue(m_subdivisions);
 
 	// create spinBoxes
 	m_spinBoxTheta = new QSpinBox;
 	m_spinBoxTheta->setRange(0, 360);
-	m_spinBoxTheta->setValue(0);
+    m_spinBoxTheta->setValue(0);
 	m_spinBoxSubdiv = new QSpinBox;
-	m_spinBoxSubdiv->setRange(0, 6);
+    m_spinBoxSubdiv->setRange(0, 6);
 	m_spinBoxSubdiv->setValue(m_subdivisions);
 
 	// init checkbox
@@ -177,8 +177,8 @@ void
 HW1b::reset()
 {
 	// reset parameters
-	m_theta		= 0;
-	m_subdivisions	= 4;
+    m_theta		= 0;
+    m_subdivisions	= 4;
 	m_updateColor	= true;
 	m_twist		= true;
 	m_sliderTheta->blockSignals(true);
@@ -269,10 +269,10 @@ void
 HW1b::triangle(vec2 a, vec2 b, vec2 c)
 {
 	// init color
-	if(m_updateColor) {
-		m_colors.push_back(vec3((float) rand()/RAND_MAX,
-					(float) rand()/RAND_MAX,
-					(float) rand()/RAND_MAX));
+    if(m_updateColor) {
+        m_colors.push_back(vec3((float) rand()/RAND_MAX,
+                    (float) rand()/RAND_MAX,
+                    (float) rand()/RAND_MAX));
 	}
 
 	// init geometry

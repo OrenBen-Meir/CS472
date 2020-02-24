@@ -9,7 +9,7 @@
 
 #include "HW1a.h"
 
-#define DEBUG
+// #define DEBUG
 
 #ifdef DEBUG
 #include <iostream>
@@ -89,23 +89,26 @@ void
 HW1a::resizeGL(int w, int h)
 {
 	// PUT YOUR CODE HERE
+
     m_winW = w;
     m_winH = h;
 
     float ar = (float) w / h;
     float xmax, ymax;
-    if(ar > 1.0) {
+    if(ar > 1.0f) {
         xmax = ar;
         ymax = 1.;
-    }
-    else {
+    } else {
         xmax = 1.;
         ymax = 1/ar;
     }
     glViewport(0, 0, w, h);
-    glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
     glOrtho(-xmax, xmax, -ymax, ymax, -1.0, 1.0);
+
+    #ifdef DEBUG
+    std::cout<<xmax<<", "<<ymax<<std::endl;
+    #endif
 }
 
 
@@ -120,12 +123,12 @@ HW1a::paintGL()
 {
 	// PUT YOUR CODE HERE
     glClear(GL_COLOR_BUFFER_BIT);
-    float h = this->m_winH;
-    float w = this->m_winW;
+    float h = this->m_winH / 3.0f;
+    float w = this->m_winW / 3.0f;
     for(int di = 0; di < 9; di++){
-        int x0 = w*(di%3)/3.0f;
-        int y0 = h*(di/3)/3.0f;
-        glViewport(x0, y0, w/3, h/3);
+        int x0 = w*(di%3);
+        int y0 = h*(di/3);
+        glViewport(x0, y0, w, h);
         glLoadIdentity();
         glBegin(DrawModes[di]);
            for(int vi = 0; vi < 32; vi += 2){

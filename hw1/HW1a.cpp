@@ -129,7 +129,8 @@ HW1a::paintGL()
         int x0 = w*(di%3);
         int y0 = h*(di/3);
         glViewport(x0, y0, w, h);
-        glLoadIdentity();
+        /*Somehow glLoadIdentity() here causes a resize issue*/
+        //glLoadIdentity();
         glBegin(DrawModes[di]);
            for(int vi = 0; vi < 32; vi += 2){
                glVertex2f(Vertices[vi], Vertices[vi+1]);

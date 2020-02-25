@@ -92,7 +92,8 @@ HW1b::paintGL()
 {
 	// PUT YOUR CODE HERE
     glClear(GL_COLOR_BUFFER_BIT);
-    glLoadIdentity();
+    /*Somehow glLoadIdentity() here causes a resize issue*/
+    //glLoadIdentity();
     for(unsigned long i = 0, j = 0; i < this->m_colors.size(); i++) {
         glColor3f(m_colors[i][0], m_colors[i][1], m_colors[i][2]);
         glBegin(GL_TRIANGLES);

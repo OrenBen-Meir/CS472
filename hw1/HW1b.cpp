@@ -8,6 +8,7 @@
 // ===============================================================
 
 #include "HW1b.h"
+#include <math.h>
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -23,6 +24,7 @@ HW1b::HW1b(const QGLFormat &glf, QWidget *parent)
     m_subdivisions	= 4;
 	m_updateColor	= 1;
 	m_twist		= 1;
+    m_colorCode = 0;
 }
 
 
@@ -92,8 +94,6 @@ HW1b::paintGL()
 {
 	// PUT YOUR CODE HERE
     glClear(GL_COLOR_BUFFER_BIT);
-    /*Somehow glLoadIdentity() here causes a resize issue*/
-    //glLoadIdentity();
     for(unsigned long i = 0, j = 0; i < this->m_colors.size(); i++) {
         glColor3f(m_colors[i][0], m_colors[i][1], m_colors[i][2]);
         glBegin(GL_TRIANGLES);
@@ -101,6 +101,15 @@ HW1b::paintGL()
             glVertex2f(m_points[j][0], m_points[j][1]); j++;
             glVertex2f(m_points[j][0], m_points[j][1]); j++;
         glEnd();
+        if(m_colorCode){
+            j -= 3;
+            glColor3f(0.0f, 0.0f, 0.0f);
+            glBegin(GL_LINE_LOOP);
+                glVertex2f(m_points[j][0], m_points[j][1]); j++;
+                glVertex2f(m_points[j][0], m_points[j][1]); j++;
+                glVertex2f(m_points[j][0], m_points[j][1]); j++;
+            glEnd();
+        }
     }
 }
 
@@ -140,9 +149,13 @@ HW1b::controlPanel()
     m_spinBoxSubdiv->setRange(0, 6);
 	m_spinBoxSubdiv->setValue(m_subdivisions);
 
-	// init checkbox
+    // init checkbox Twist
 	m_checkBoxTwist = new QCheckBox("Twist");
 	m_checkBoxTwist->setChecked(m_twist);
+
+    // init Checkbox ColorCode
+    m_checkBoxColorCode = new QCheckBox("Color code");
+    m_checkBoxColorCode->setChecked(m_colorCode);
 
 	// layout for assembling widgets
 	QGridLayout *layout = new QGridLayout;
@@ -153,6 +166,7 @@ HW1b::controlPanel()
 	layout->addWidget(m_sliderSubdiv,  1, 1);
 	layout->addWidget(m_spinBoxSubdiv, 1, 2);
 	layout->addWidget(m_checkBoxTwist, 2, 0);
+    layout->addWidget(m_checkBoxColorCode, 3, 0);
 
 	// assign layout to group box
 	groupBox->setLayout(layout);
@@ -163,6 +177,7 @@ HW1b::controlPanel()
 	connect(m_spinBoxTheta,  SIGNAL(valueChanged(int)), this, SLOT(changeTheta (int)));
 	connect(m_spinBoxSubdiv, SIGNAL(valueChanged(int)), this, SLOT(changeSubdiv(int)));
 	connect(m_checkBoxTwist, SIGNAL(stateChanged(int)), this, SLOT(changeTwist (int)));
+    connect(m_checkBoxColorCode, SIGNAL(stateChanged(int)), this, SLOT(changeColorCode(int)));
 
 	return(groupBox);
 }
@@ -182,6 +197,7 @@ HW1b::reset()
     m_subdivisions	= 4;
 	m_updateColor	= true;
 	m_twist		= true;
+    m_colorCode = false;
 	m_sliderTheta->blockSignals(true);
 	m_sliderTheta->setValue(0.0f);
 	m_sliderTheta->blockSignals(false);
@@ -199,6 +215,9 @@ HW1b::reset()
 
 	// reset twist checkbox
 	m_checkBoxTwist->setChecked(m_twist);
+
+    // reset colorCode checkbox
+    m_checkBoxColorCode->setChecked(m_colorCode);
 
 	// redraw
 	m_points.clear();
@@ -225,6 +244,7 @@ HW1b::initBuffers()
 
 	// recursively subdivide triangle into triangular facets;
 	// store vertex positions and colors in m_points and m_colors, respectively
+    m_currentTriangle = 0;
 	divideTriangle(vertices[0], vertices[1], vertices[2], m_subdivisions);
 }
 
@@ -271,9 +291,14 @@ HW1b::triangle(vec2 a, vec2 b, vec2 c)
 {
 	// init color
     if(m_updateColor) {
-        m_colors.push_back(vec3((float) rand()/RAND_MAX,
-                    (float) rand()/RAND_MAX,
-                    (float) rand()/RAND_MAX));
+        if(m_colorCode){
+            m_colors.push_back(vec3(0.0f, (float)m_currentTriangle/powf(4,m_subdivisions), 0.5f));
+            m_currentTriangle++;
+        } else {
+            m_colors.push_back(vec3((float) rand()/RAND_MAX,
+                        (float) rand()/RAND_MAX,
+                        (float) rand()/RAND_MAX));
+        }
 	}
 
 	// init geometry
@@ -375,4 +400,23 @@ HW1b::changeTwist(int twist)
 	m_points.clear();
 	initBuffers();
 	updateGL();
+}
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+// HW1b::changeColorCode:
+//
+// Slot function to turn on/off m_colorCode;
+//
+void
+HW1b::changeColorCode(int colorCode)
+{
+    // init vars
+    m_colorCode = colorCode;
+    m_updateColor = 1;
+
+    //redraw
+    m_points.clear();
+    m_colors.clear();
+    initBuffers();
+    updateGL();
 }

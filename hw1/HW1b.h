@@ -35,8 +35,8 @@ protected:
 	void		resizeGL	(int, int);	// resize GL widget
 	void		paintGL		();		// render GL scene
 
-	void		divideTriangle	(vec2, vec2, vec2, int);
-	void		triangle	(vec2, vec2, vec2);
+    void		divideTriangle	(vec2, vec2, vec2, int*, int);
+    void		triangle	(vec2, vec2, vec2, int*);
 	vec2		rotTwist	(vec2);
 
 private:
@@ -47,7 +47,6 @@ private:
 	int		  m_subdivisions;
 	int		  m_updateColor;
     int       m_colorCode;  // 1 means triangle set to color code, 0 means it isn't
-    int       m_currentTriangle; // number indicator of which triangle is color coded
 	QSlider		 *m_sliderTheta;
 	QSlider		 *m_sliderSubdiv;
 	QSpinBox	 *m_spinBoxTheta;

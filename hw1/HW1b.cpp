@@ -244,8 +244,8 @@ HW1b::initBuffers()
 
 	// recursively subdivide triangle into triangular facets;
 	// store vertex positions and colors in m_points and m_colors, respectively
-    m_currentTriangle = 0;
-	divideTriangle(vertices[0], vertices[1], vertices[2], m_subdivisions);
+    int startTriangle = 0;
+    divideTriangle(vertices[0], vertices[1], vertices[2], &startTriangle, m_subdivisions);
 }
 
 
@@ -256,7 +256,7 @@ HW1b::initBuffers()
 // Recursive subdivision of triangle (a,b,c). Recurse count times.
 //
 void
-HW1b::divideTriangle(vec2 a, vec2 b, vec2 c, int count)
+HW1b::divideTriangle(vec2 a, vec2 b, vec2 c, int* currTriangle_ptr, int count)
 {
     // PUT YOUR CODE HERE
 
@@ -270,12 +270,12 @@ HW1b::divideTriangle(vec2 a, vec2 b, vec2 c, int count)
     vec2 ac = vec2((a[0]+c[0])/2,(a[1]+c[1])/2);
     vec2 bc = vec2((b[0]+c[0])/2,(b[1]+c[1])/2);
     if (count > 0) {
-        divideTriangle(a, ab, ac, count-1);
-        divideTriangle(ab, b, bc, count-1);
-        divideTriangle(ac, bc, c, count-1);
-        divideTriangle(bc, ac, ab, count-1);
+        divideTriangle(a, ab, ac, currTriangle_ptr, count-1);
+        divideTriangle(ab, b, bc, currTriangle_ptr, count-1);
+        divideTriangle(ac, bc, c, currTriangle_ptr, count-1);
+        divideTriangle(bc, ac, ab, currTriangle_ptr, count-1);
     } else {
-        triangle(a, b, c);
+        triangle(a, b, c, currTriangle_ptr);
     }
 }
 
@@ -287,13 +287,13 @@ HW1b::divideTriangle(vec2 a, vec2 b, vec2 c, int count)
 // Push positions and colors of the three triangle vertices.
 //
 void
-HW1b::triangle(vec2 a, vec2 b, vec2 c)
+HW1b::triangle(vec2 a, vec2 b, vec2 c, int* currTriangle_ptr)
 {
 	// init color
     if(m_updateColor) {
         if(m_colorCode){
-            m_colors.push_back(vec3(0.0f, (float)m_currentTriangle/powf(4,m_subdivisions), 0.5f));
-            m_currentTriangle++;
+            m_colors.push_back(vec3(0.0f, (float)*currTriangle_ptr/powf(4,m_subdivisions), 0.5f));
+            (*currTriangle_ptr)++;
         } else {
             m_colors.push_back(vec3((float) rand()/RAND_MAX,
                         (float) rand()/RAND_MAX,

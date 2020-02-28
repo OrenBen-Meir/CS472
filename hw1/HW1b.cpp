@@ -21,10 +21,10 @@ HW1b::HW1b(const QGLFormat &glf, QWidget *parent)
 {
 	// init vars
 	m_theta		= 0;
-    m_subdivisions	= 4;
+	m_subdivisions	= 4;
 	m_updateColor	= 1;
 	m_twist		= 1;
-    m_colorCode = 0;
+	m_colorCode = 0;
 }
 
 
@@ -137,25 +137,25 @@ HW1b::controlPanel()
 
 	// init sliders
 	m_sliderTheta ->setRange(0, 360);
-    m_sliderTheta ->setValue(0);
-    m_sliderSubdiv->setRange(0, 6);
+	m_sliderTheta ->setValue(0);
+	m_sliderSubdiv->setRange(0, 6);
 	m_sliderSubdiv->setValue(m_subdivisions);
 
 	// create spinBoxes
 	m_spinBoxTheta = new QSpinBox;
 	m_spinBoxTheta->setRange(0, 360);
-    m_spinBoxTheta->setValue(0);
+	m_spinBoxTheta->setValue(0);
 	m_spinBoxSubdiv = new QSpinBox;
-    m_spinBoxSubdiv->setRange(0, 6);
+	m_spinBoxSubdiv->setRange(0, 6);
 	m_spinBoxSubdiv->setValue(m_subdivisions);
 
-    // init checkbox Twist
+	// init checkbox Twist
 	m_checkBoxTwist = new QCheckBox("Twist");
 	m_checkBoxTwist->setChecked(m_twist);
 
-    // init Checkbox ColorCode
-    m_checkBoxColorCode = new QCheckBox("Color code");
-    m_checkBoxColorCode->setChecked(m_colorCode);
+	// init Checkbox ColorCode
+	m_checkBoxColorCode = new QCheckBox("Color code (Extra Credit),\n darker triangles are made 1st,\n brighter ones last");
+	m_checkBoxColorCode->setChecked(m_colorCode);
 
 	// layout for assembling widgets
 	QGridLayout *layout = new QGridLayout;
@@ -166,7 +166,7 @@ HW1b::controlPanel()
 	layout->addWidget(m_sliderSubdiv,  1, 1);
 	layout->addWidget(m_spinBoxSubdiv, 1, 2);
 	layout->addWidget(m_checkBoxTwist, 2, 0);
-    layout->addWidget(m_checkBoxColorCode, 3, 0);
+	layout->addWidget(m_checkBoxColorCode, 3, 0);
 
 	// assign layout to group box
 	groupBox->setLayout(layout);
@@ -177,7 +177,7 @@ HW1b::controlPanel()
 	connect(m_spinBoxTheta,  SIGNAL(valueChanged(int)), this, SLOT(changeTheta (int)));
 	connect(m_spinBoxSubdiv, SIGNAL(valueChanged(int)), this, SLOT(changeSubdiv(int)));
 	connect(m_checkBoxTwist, SIGNAL(stateChanged(int)), this, SLOT(changeTwist (int)));
-    connect(m_checkBoxColorCode, SIGNAL(stateChanged(int)), this, SLOT(changeColorCode(int)));
+	connect(m_checkBoxColorCode, SIGNAL(stateChanged(int)), this, SLOT(changeColorCode(int)));
 
 	return(groupBox);
 }
@@ -193,11 +193,11 @@ void
 HW1b::reset()
 {
 	// reset parameters
-    m_theta		= 0;
-    m_subdivisions	= 4;
+	m_theta		= 0;
+	m_subdivisions	= 4;
 	m_updateColor	= true;
 	m_twist		= true;
-    m_colorCode = false;
+	m_colorCode = false;
 	m_sliderTheta->blockSignals(true);
 	m_sliderTheta->setValue(0.0f);
 	m_sliderTheta->blockSignals(false);
@@ -216,8 +216,8 @@ HW1b::reset()
 	// reset twist checkbox
 	m_checkBoxTwist->setChecked(m_twist);
 
-    // reset colorCode checkbox
-    m_checkBoxColorCode->setChecked(m_colorCode);
+	// reset colorCode checkbox
+	m_checkBoxColorCode->setChecked(m_colorCode);
 
 	// redraw
 	m_points.clear();
@@ -237,15 +237,15 @@ void
 HW1b::initBuffers()
 {
 	const QVector2D vertices[] = {
-		 QVector2D( 0.0f ,  0.75f),
-		 QVector2D( 0.65f, -0.375f),
-		 QVector2D(-0.65f, -0.375f)
+		QVector2D( 0.0f ,  0.75f),
+		QVector2D( 0.65f, -0.375f),
+		QVector2D(-0.65f, -0.375f)
 	};
 
 	// recursively subdivide triangle into triangular facets;
 	// store vertex positions and colors in m_points and m_colors, respectively
-    int startTriangle = 0;
-    divideTriangle(vertices[0], vertices[1], vertices[2], &startTriangle, m_subdivisions);
+	int startTriangle = 0;
+	divideTriangle(vertices[0], vertices[1], vertices[2], &startTriangle, m_subdivisions);
 }
 
 
@@ -296,8 +296,8 @@ HW1b::triangle(vec2 a, vec2 b, vec2 c, int* currTriangle_ptr)
             (*currTriangle_ptr)++;
         } else {
             m_colors.push_back(vec3((float) rand()/RAND_MAX,
-                        (float) rand()/RAND_MAX,
-                        (float) rand()/RAND_MAX));
+                                    (float) rand()/RAND_MAX,
+                                    (float) rand()/RAND_MAX));
         }
 	}
 

@@ -44,15 +44,15 @@ private:
 	int		  m_winH;			// window height
 	int		  m_twist;
 	float		  m_theta;
-	int		  m_subdivisions;
-	int		  m_updateColor;
-    int       m_colorCode;  // 1 means triangle set to color code, 0 means it isn't
+    int		  m_subdivisions;
+    int		  m_updateColor;
+    int		  m_colorCode;  // 1 means triangle set to color code, 0 means it isn't
 	QSlider		 *m_sliderTheta;
 	QSlider		 *m_sliderSubdiv;
 	QSpinBox	 *m_spinBoxTheta;
 	QSpinBox	 *m_spinBoxSubdiv;
 	QCheckBox	 *m_checkBoxTwist;
-    QCheckBox    *m_checkBoxColorCode; // Check box for if color coding or not
+	QCheckBox    	 *m_checkBoxColorCode; // Check box for if color coding or not
 	std::vector<vec2> m_points;
 	std::vector<vec3> m_colors;
 };

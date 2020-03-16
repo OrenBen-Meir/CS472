@@ -5,5 +5,7 @@ uniform	mat4	u_Projection;	// uniform variable for passing projection matrix
 
 void main() 
 {
-	// PUT YOUR CODE HERE
+        // PUT YOUR CODE HERE
+    vec4 v4_position = vec4(a_Position, 0, 1);
+    gl_Position = u_Projection*v4_position;
 }

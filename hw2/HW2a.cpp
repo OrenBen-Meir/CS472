@@ -72,6 +72,29 @@ void
 HW2a::resizeGL(int w, int h)
 {
 	// PUT YOUR CODE HERE
+
+    // save window dimensions
+    m_winW = w;
+    m_winH = h;
+
+    // compute aspect ratio
+    float ar = (float) w / h;
+
+    // set xmax, ymax;
+    float xmax, ymax;
+    if(ar > 1.0) {		// wide screen
+        xmax = ar;
+        ymax = 1.;
+    } else {		// tall screen
+        xmax = 1.;
+        ymax = 1 / ar;
+    }
+
+    // set viewport to occupy full canvas
+    glViewport(0, 0, w, h);
+
+    m_projection.setToIdentity();
+    m_projection.ortho(-xmax, xmax, -ymax, ymax, -1.0, 1.0);
 }
 
 
@@ -112,6 +135,28 @@ HW2a::paintGL()
 
 	// use glsl program
 	// PUT YOUR CODE HERE
+
+    // use program
+    glUseProgram(m_program[HW2A].programId());
+
+    // Set a loop drawing for each loop
+    for(int vi = 0; vi < 9; vi++){
+        int x0 = w*(vi%3);
+        int y0 = h*(vi/3);
+
+        // set viewport
+        glViewport(x0, y0, w, h);
+
+        // attatch projection matrix
+        glUniformMatrix4fv(m_uniform[HW2A][PROJ], 1, GL_FALSE, m_projection.constData());
+
+        // Insert the appropriate points for each draw mode
+        glDrawArrays(DrawModes[vi], 0, m_vertNum);
+
+    }
+
+    // end program
+    glUseProgram(0);
 
 	// disable vertex shader point size adjustment
 	glDisable(GL_VERTEX_PROGRAM_POINT_SIZE);

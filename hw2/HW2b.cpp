@@ -1,4 +1,4 @@
-﻿// ===============================================================
+// ===============================================================
 // Computer Graphics Homework Solutions
 // Copyright (C) 2019 by George Wolberg
 //
@@ -8,13 +8,6 @@
 // ===============================================================
 
 #include "HW2b.h"
-
-#define DEBUG
-#ifdef DEBUG
-
-#include <iostream>
-
-#endif
 
 // shader ID
 enum {HW2B};
@@ -124,16 +117,17 @@ HW2b::paintGL()
 
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // bind vertex buffer to GPU
+    // binds vertex buffer to a_Position
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
     glEnableVertexAttribArray(ATTRIB_VERTEX);
     glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, false, 0, NULL);
 
-    // bind color buffer to GPU
+    // configures color buffer to a_Color
     glBindBuffer(GL_ARRAY_BUFFER, m_colorBuffer);
     glEnableVertexAttribArray(ATTRIB_COLOR);
     glVertexAttribPointer(ATTRIB_COLOR, 3, GL_FLOAT, false, 0, NULL);
 
+    // start glsl program
     glUseProgram(m_program[HW2B].programId());
 
     glUniformMatrix4fv(m_uniform[HW2B][PROJ], 1, GL_FALSE, m_projection.constData ());
@@ -143,7 +137,10 @@ HW2b::paintGL()
 
     glDrawArrays(GL_TRIANGLES, 0, m_numPoints);
 
+    // end glsl program
     glUseProgram(0);
+
+    // unbind vertex and color buffers
     glDisableVertexAttribArray(ATTRIB_COLOR);
     glDisableVertexAttribArray(ATTRIB_VERTEX);
 }
@@ -327,12 +324,14 @@ HW2b::divideTriangle(vec2 a, vec2 b, vec2 c, int count)
 	// PUT YOUR CODE HERE
 
     /*
+     *   Divide triangles in this manner
      *            a
-     *
-     *       ab      ac
-     *
-     *    b      bc       c
-     *
+     *          /  \
+     *         /    \
+     *       ab-----ac
+     *      /  \   /  \
+     *     /    \ /    \
+     *    b_____ bc_____c
      */
 
     vec2 ab = vec2((a[0]+b[0])/2,(a[1]+b[1])/2);

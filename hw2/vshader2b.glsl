@@ -14,14 +14,13 @@ void main()
 {
 	// PUT YOUR CODE HERE
 
-        // Set up the distance value
         float t;
         if (bool(u_Twist)) {
             t = sqrt(a_Position.x*a_Position.x + a_Position.y*a_Position.y)*u_Theta;
+
             float sintheta = sin(t);
             float costheta = cos(t);
 
-            // Twists position according to the distance anf theta
             gl_Position = u_Projection*u_Modelview*vec4(
                         a_Position.x*costheta - a_Position.y*sintheta,
                         a_Position.x*sintheta + a_Position.y*costheta,

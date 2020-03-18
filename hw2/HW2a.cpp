@@ -139,6 +139,9 @@ HW2a::paintGL()
     // use program
     glUseProgram(m_program[HW2A].programId());
 
+    // bind projection matrix
+    glUniformMatrix4fv(m_uniform[HW2A][PROJ], 1, GL_FALSE, m_projection.constData());
+
     // Set a loop drawing for each loop
     for(int vi = 0; vi < 9; vi++){
         int x0 = w*(vi%3);
@@ -146,9 +149,6 @@ HW2a::paintGL()
 
         // set viewport
         glViewport(x0, y0, w, h);
-
-        // attatch projection matrix
-        glUniformMatrix4fv(m_uniform[HW2A][PROJ], 1, GL_FALSE, m_projection.constData());
 
         // Insert the appropriate points for each draw mode
         glDrawArrays(DrawModes[vi], 0, m_vertNum);

@@ -21,7 +21,7 @@ void main()
             float sintheta = sin(t);
             float costheta = cos(t);
 
-            gl_Position = u_Projection*u_Modelview*vec4(
+            gl_Position = u_Projection*vec4(
                         a_Position.x*costheta - a_Position.y*sintheta,
                         a_Position.x*sintheta + a_Position.y*costheta,
                         0, 1);

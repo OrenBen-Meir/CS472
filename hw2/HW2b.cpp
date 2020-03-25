@@ -54,10 +54,6 @@ HW2b::initializeGL()
 	// init vertex and fragment shaders
 	initShaders();
 
-    // create vertex and color buffers
-    glGenBuffers(1, &m_vertexBuffer);
-    glGenBuffers(1, &m_colorBuffer);
-
 	// initialize vertex buffer and write positions to vertex shader
 	initVertexBuffer();
 
@@ -291,12 +287,16 @@ HW2b::initVertexBuffer()
 		vec2( 0.0f,   0.75f ),
 		vec2( 0.65f, -0.375f),
 		vec2(-0.65f, -0.375f)
-	};
+    };
 
     // recursively subdivide triangle into triangular facets;
     // store vertex positions and colors in m_points and m_colors, respectively
     divideTriangle(vertices[0], vertices[1], vertices[2], m_subdivisions);
     m_numPoints = (int) m_points.size();		// save number of vertices
+
+    // create vertex and color buffers
+    glGenBuffers(1, &m_vertexBuffer);
+    glGenBuffers(1, &m_colorBuffer);
 
     // bind vertex buffer to the GPU and copy the vertices from CPU to GPU
     glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);

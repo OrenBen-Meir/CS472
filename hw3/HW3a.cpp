@@ -345,6 +345,19 @@ HW3a::initVertexBuffer()
 	};
 
 	// PUT YOUR CODE HERE
+    divideTriangle(vertices[0], vertices[1], vertices[2], m_subdivisions);
+    m_numPoints = (int) m_points.size();
+
+    glGenBuffers(1, &m_vertexBuffer);
+    glGenBuffers(1, &m_texBuffer);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
+    glBufferData(GL_ARRAY_BUFFER, m_numPoints*sizeof(vec2), &m_points[0], GL_STATIC_DRAW);
+    // do the same for m_textuffer
+    glBindBuffer(GL_ARRAY_BUFFER, m_texBuffer);
+    glBufferData(GL_ARRAY_BUFFER, m_coords.size()*sizeof(vec2), &m_coords[0], GL_STATIC_DRAW);
+
+    m_points.clear();
 }
 
 

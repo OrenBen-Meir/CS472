@@ -8,6 +8,7 @@
 // ===============================================================
 
 #include "HW3a.h"
+#include <QDebug>
 
 // shader ID
 enum {TEXTURE, WIREFRAME};
@@ -123,26 +124,44 @@ HW3a::paintGL()
 	// bind vertex buffer to the GPU; enable buffer to be copied to the
 	// attribute vertex variable and specify data format
 	// PUT YOUR CODE HERE
+    glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
+    glEnableVertexAttribArray(ATTRIB_VERTEX);
+    glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, false, 0, NULL);
 
 	// bind texture coord buffer to the GPU; enable buffer to be copied to the
 	// attribute texture coordinate variable and specify data format
 	// PUT YOUR CODE HERE
+    glBindBuffer(GL_ARRAY_BUFFER, m_texBuffer);
+    glEnableVertexAttribArray(ATTRIB_TEXCOORD);
+    glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, false, 0, NULL);
 
 	// use texture glsl program
 	// PUT YOUR CODE HERE
+    glUseProgram(m_program[TEXTURE].programId());
 
 	// pass parameters to vertex shader
-	// PUT YOUR CODE HERE
+    // PUT YOUR CODE HERE
+
+    glUniformMatrix4fv(MV, 1, GL_FALSE, m_modelview.constData ());
+    glUniformMatrix4fv(PROJ, 1, GL_FALSE, m_projection.constData ());
+    glUniform1f(THETA, m_theta);
+    glUniform1i(TWIST, m_twist);
 
 	// draw texture mapped triangles
 	// PUT YOUR CODE HERE
 
-	glLineWidth(1.5f);
+    /* TODO: find sampler*/
+    glUniform1i(SAMPLER, m_texture);
+
+    glDrawArrays(GL_TRIANGLES, 0, m_numPoints);
 
 	// draw wireframe, if necessary
 	if(m_wire) {
 		// PUT YOUR CODE HERE
 	}
+    glUseProgram(0);
+    glDisableVertexAttribArray(ATTRIB_TEXCOORD);
+    glDisableVertexAttribArray(ATTRIB_VERTEX);
 }
 
 
@@ -203,7 +222,7 @@ HW3a::controlPanel()
 	// assign layout to group box
 	groupBox->setLayout(layout);
 
-	// init signal/slot connections
+    // init signal/slot connections
 	connect(m_sliderTheta,   SIGNAL(valueChanged(int)), this, SLOT(changeTheta (int)));
 	connect(m_sliderSubdiv,  SIGNAL(valueChanged(int)), this, SLOT(changeSubdiv(int)));
 	connect(m_spinBoxTheta,  SIGNAL(valueChanged(int)), this, SLOT(changeTheta (int)));
@@ -311,7 +330,7 @@ HW3a::initShaders()
 	uniforms["u_Projection"] = PROJ;
 	uniforms["u_Theta"     ] = THETA;
 	uniforms["u_Twist"     ] = TWIST;
-	uniforms["u_Sampler"   ] = SAMPLER;
+    uniforms["u_Sampler"   ] = SAMPLER;
 
 	// compile shader, bind attribute vars, link shader, and initialize uniform var table
 	initShader(TEXTURE,   QString(":/hw3/vshader3a1.glsl"), QString(":/hw3/fshader3a1.glsl"), uniforms);
@@ -358,6 +377,7 @@ HW3a::initVertexBuffer()
     glBufferData(GL_ARRAY_BUFFER, m_coords.size()*sizeof(vec2), &m_coords[0], GL_STATIC_DRAW);
 
     m_points.clear();
+    m_coords.clear();
 }
 
 
@@ -503,7 +523,7 @@ HW3a::changeTwist(int twist)
 void
 HW3a::changeWire(int wire)
 {
-	// init vars
+    // init vars
 	m_wire = wire;
 
 	// redraw with new wire flag

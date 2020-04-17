@@ -8,4 +8,7 @@ release
 *.vcxproj*
 Make*
 *.app
-*.pro.user
+
+
+CS472.pro.user.*
+CS472.pro.user

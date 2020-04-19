@@ -142,22 +142,29 @@ HW3a::paintGL()
 	// pass parameters to vertex shader
     // PUT YOUR CODE HERE
 
-    glUniformMatrix4fv(MV, 1, GL_FALSE, m_modelview.constData ());
-    glUniformMatrix4fv(PROJ, 1, GL_FALSE, m_projection.constData ());
-    glUniform1f(THETA, m_theta);
-    glUniform1i(TWIST, m_twist);
+    glUniformMatrix4fv(m_uniform[TEXTURE][PROJ],1,GL_FALSE,m_projection.constData());
+    glUniformMatrix4fv(m_uniform[TEXTURE][MV],1,GL_FALSE,m_modelview.constData());
+    glUniform1i(m_uniform[TEXTURE][TWIST], m_twist);
+    glUniform1f(m_uniform[TEXTURE][THETA], m_theta);
+    glUniform1i(m_uniform[TEXTURE][SAMPLER],0);
 
 	// draw texture mapped triangles
 	// PUT YOUR CODE HERE
-
-    /* TODO: find sampler*/
-    glUniform1i(SAMPLER, m_texture);
 
     glDrawArrays(GL_TRIANGLES, 0, m_numPoints);
 
 	// draw wireframe, if necessary
 	if(m_wire) {
 		// PUT YOUR CODE HERE
+        glUseProgram(m_program[WIREFRAME].programId());
+
+        glUniformMatrix4fv(m_uniform[WIREFRAME][PROJ],1,GL_FALSE,m_projection.constData());
+        glUniformMatrix4fv(m_uniform[WIREFRAME][MV],1,GL_FALSE,m_modelview.constData());
+        glUniform1i(m_uniform[WIREFRAME][TWIST], m_twist);
+        glUniform1f(m_uniform[WIREFRAME][THETA], m_theta);
+        for(int i=0; i < m_numPoints;i+=3){
+                    glDrawArrays(GL_LINE_LOOP,i,3);
+        }
 	}
     glUseProgram(0);
     glDisableVertexAttribArray(ATTRIB_TEXCOORD);

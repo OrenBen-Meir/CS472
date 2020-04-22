@@ -410,10 +410,10 @@ HW3a::divideTriangle(vec2 a, vec2 b, vec2 c, int count)
      *    b-----bc------c
      */
 
-    vec2 ab = vec2((a[0]+b[0])/2,(a[1]+b[1])/2);
-    vec2 ac = vec2((a[0]+c[0])/2,(a[1]+c[1])/2);
-    vec2 bc = vec2((b[0]+c[0])/2,(b[1]+c[1])/2);
     if(count > 0) {
+        vec2 ab = vec2((a[0]+b[0])/2,(a[1]+b[1])/2);
+        vec2 ac = vec2((a[0]+c[0])/2,(a[1]+c[1])/2);
+        vec2 bc = vec2((b[0]+c[0])/2,(b[1]+c[1])/2);
         divideTriangle(ab, b, bc, count-1);
         divideTriangle(a, ab, ac, count-1);
         divideTriangle(ac, bc, c, count-1);

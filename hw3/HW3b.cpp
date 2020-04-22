@@ -376,7 +376,7 @@ HW3b::resetMesh()
 	if(m_wave) m_timer->stop();
 
 	for(int i=0; i< m_grid; ++i) {
-	   for(int j=0; j< m_grid; ++j) {
+       for(int j=0; j< m_grid; ++j) {
 		m_force[i][j] = 0.0f;
 		m_veloc[i][j] = 0.0f;
 		QVector3D &vec = m_vertices[i][j];
@@ -411,15 +411,17 @@ HW3b::resetMesh()
 				break;
 			case CORNERBLOCK:
 				// PUT YOUR CODE HERE
-                vec.setZ(((i > m_grid/6) && m_grid*5/6)? 0.5 : 0.0f);
+                vec.setZ(((j >= m_grid*4/5) && ( i >= m_grid*4/5))? 0.5 : 0.0f);
 				break;
 			case HILL:
-				// PUT YOUR CODE HERE
-                vec.setZ(0.25f- 0.5f*powf(i-0.5f, 2) - 0.5f*powf(i-0.5f, 2));
+                // PUT YOUR CODE HERE
+                vec.setZ(0.5f- powf(i/(float)m_grid-0.5f, 2) - powf(j/(float)m_grid-0.5f, 2));
 				break;
 			case HILLFOUR:
 				// PUT YOUR CODE HERE
-                vec.setZ(2.0f*i*(i-0.5)*(i-1.0f)-2.0f*j*(j-0.5f)*(j-1.0f)+0.2f);
+                vec.setZ(5.0f*(i/(float)m_grid)*((i/(float)m_grid)-0.5)*((i/(float)m_grid)-1.0f)
+                         + 5.0f*(j/(float)m_grid)*((j/(float)m_grid)-0.5f)*((j/(float)m_grid)-1.0f)
+                         + 0.2f);
 				break;
 		}
 	   }

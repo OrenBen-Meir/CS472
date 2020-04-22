@@ -181,7 +181,7 @@ HW3b::paintGL()
 			break;
 	case WIREFRAME:
 		// draw wireframe
-		// PUT YOUR CODE HERE
+        // PUT YOUR CODE HERE
         glUseProgram(m_program[WIRE_SHADER].programId());
         glUniformMatrix4fv(m_uniform[WIRE_SHADER][VIEW], 1, GL_FALSE, m_camera->view().constData());
         glUniformMatrix4fv(m_uniform[WIRE_SHADER][PROJ], 1, GL_FALSE, m_projection.constData());
@@ -375,7 +375,7 @@ HW3b::resetMesh()
 	// pause animation to reset grid without interruption by timer
 	if(m_wave) m_timer->stop();
 
-	for(int i=0; i< m_grid; ++i) {
+    for(int i=0; i< m_grid; ++i) {
        for(int j=0; j< m_grid; ++j) {
 		m_force[i][j] = 0.0f;
 		m_veloc[i][j] = 0.0f;
@@ -397,20 +397,20 @@ HW3b::resetMesh()
                 vec.setZ(((0 < (m_grid - i) - j) && ((m_grid - i) - j < 3))? 0.3f : 0.0f);
 				break;
 			case SIDEWALL:
-				// PUT YOUR CODE HERE
+                // PUT YOUR CODE HERE
                 vec.setZ((i == 1)? 0.5f : 0.0f);
 				break;
 			case DIAGONALBLOCK:
-				// PUT YOUR CODE HERE
-                vec.setZ((j>i)? 0.0f : 0.3f);
+                // PUT YOUR CODE HERE
+                vec.setZ((j>m_grid - i)? 0.3f : 0.0f);
 				break;
 			case MIDDLEBLOCK:
-				// PUT YOUR CODE HERE
+                // PUT YOUR CODE HERE
                 vec.setZ(((m_grid/3 < i && i < m_grid*2/3) &&
                           (m_grid/3 < j && j < m_grid*2/3))?  0.5f : 0.0f);
 				break;
 			case CORNERBLOCK:
-				// PUT YOUR CODE HERE
+                // PUT YOUR CODE HERE
                 vec.setZ(((j >= m_grid*4/5) && ( i >= m_grid*4/5))? 0.5 : 0.0f);
 				break;
 			case HILL:
@@ -418,7 +418,7 @@ HW3b::resetMesh()
                 vec.setZ(0.5f- powf(i/(float)m_grid-0.5f, 2) - powf(j/(float)m_grid-0.5f, 2));
 				break;
 			case HILLFOUR:
-				// PUT YOUR CODE HERE
+                // PUT YOUR CODE HERE
                 vec.setZ(5.0f*(i/(float)m_grid)*((i/(float)m_grid)-0.5)*((i/(float)m_grid)-1.0f)
                          + 5.0f*(j/(float)m_grid)*((j/(float)m_grid)-0.5f)*((j/(float)m_grid)-1.0f)
                          + 0.2f);
